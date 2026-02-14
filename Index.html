@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️ | RUII-X081</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #800000;
+            --secondary: #FFD1DC;
+            --bg: #FFF5E1;
+            --text: #4A4A4A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--primary); }
+
+        /* --- NAVIGATION --- */
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            background: var(--primary);
+            padding: 12px;
+            border-radius: 12px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(128, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .hamburger div { width: 25px; height: 3px; background: white; margin: 5px 0; transition: 0.4s; border-radius: 2px; }
+
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100%;
+            background: white;
+            z-index: 999;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding-top: 100px;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu.active { left: 0; }
+        .nav-menu a {
+            display: block;
+            padding: 18px 30px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            transition: 0.3s;
+            border-bottom: 1px solid var(--bg);
+        }
+        .nav-menu a:hover { background: var(--secondary); padding-left: 40px; }
+
+        /* --- INTRO --- */
+        #intro {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: var(--bg);
+            z-index: 101;
+            transition: opacity 1s ease;
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+
+        .heart-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        /* --- MAIN CONTENT --- */
+        #main-content { display: none; padding-bottom: 100px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 1s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        header { text-align: center; padding: 100px 0 50px; }
+
+        /* STORY */
+        .story-section { border-left: 2px solid var(--secondary); padding-left: 30px; margin: 60px 20px; }
+        .story-item { margin-bottom: 50px; position: relative; }
+        .story-item::before { content: '❤'; position: absolute; left: -41px; top: 0; background: var(--bg); color: var(--primary); font-size: 1.5rem; }
+        .story-title { font-weight: 700; font-size: 1.2rem; color: var(--primary); }
+
+        /* SECRETS GRID */
+        .secrets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 60px 0; }
+        .card { background: white; padding: 30px; border-radius: 15px; text-align: center; border: 1px solid var(--secondary); transition: 0.3s; cursor: pointer; }
+        .card:hover { transform: translateY(-10px) rotate(2deg); background: var(--secondary); }
+
+        /* ALBUM */
+        #album-section { display: none; margin-top: 50px; }
+        .photo-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 40px; transition: 0.3s; }
+        .photo-card img { width: 100%; height: 500px; object-fit: cover; border-radius: 15px; margin-bottom: 20px; }
+        .photo-card h3 { margin-bottom: 10px; color: var(--primary); }
+
+        /* SURPRISE */
+        .surprise-box { background: var(--primary); color: white; text-align: center; padding: 50px; border-radius: 20px; cursor: pointer; margin-top: 50px; }
+        .surprise-content { display: none; animation: fadeIn 1s ease; }
+
+        .heart-rain { position: fixed; top: -10vh; animation: fall 4s linear forwards; font-size: 1.5rem; z-index: 999; }
+        @keyframes fall { to { transform: translateY(110vh); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 600px) { header h1 { font-size: 2.2rem; } .photo-card img { height: 350px; } }
+    </style>
+</head>
+<body>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <div></div><div></div><div></div>
+    </div>
+
+    <nav class="nav-menu" id="navMenu">
+        <a href="#" onclick="showSection('home')">🏠 Beranda Kenangan</a>
+        <a href="#" onclick="showSection('album')">📸 Orang Favorit Aku</a>
+        <div style="padding: 30px; margin-top: 50px; font-size: 0.7rem; color: #bbb;">ID: RUII-X081 | Key: 7363</div>
+    </nav>
+
+    <div id="intro">
+        <p style="margin-bottom: 20px; font-style: italic; color: #666;">Ada pesan kecil menunggumu...</p>
+        <button class="heart-btn" onclick="openGift()">Buka Hadiah</button>
+    </div>
+
+    <div id="main-content">
+        <div class="container">
+            
+            <div id="home-section">
+                <header class="fade-in">
+                    <h1>Ruang Kenangan Kita</h1>
+                    <p>Selamat Hari Valentine. Scroll pelan-pelan ya...</p>
+                </header>
+
+                <div class="story-section">
+                    <div class="story-item fade-in">
+                        <div class="story-title">Awal Mula</div>
+                        <p>Inget nggak waktu pertama kali kita ngobrol? Waktu itu rasanya canggung banget, tapi entah kenapa aku ngerasa ada yang beda. Sesuatu yang bikin aku pengen tahu lebih banyak.</p>
+                    </div>
+                    <div class="story-item fade-in">
+                        <div class="story-title">Momen Sederhana</div>
+                        <p>Bukan soal hadiah mahal atau jalan-jalan jauh. Cuma sekadar ketawa bareng karena hal random, atau dengerin cerita kamu seharian, itu udah cukup buat bikin hariku jadi lebih baik.</p>
+                    </div>
+                    <div class="story-item fade-in">
+                        <div class="story-title">Sekarang</div>
+                        <p>Dan di sini kita sekarang. Melewati hari-hari biasa yang jadi spesial cuma karena ada kamu di dalamnya. Makasih ya udah bertahan sama aku.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 80px;" class="fade-in">
+                    <h2>Hal yang Diam-diam Aku Suka</h2>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">(Coba sentuh kotaknya)</p>
+                </div>
+
+                <div class="secrets-grid">
+                    <div class="card fade-in"><h3>Caramu Tertawa</h3><p>Renyah banget, nular, dan selalu bikin aku ikut senyum.</p></div>
+                    <div class="card fade-in"><h3>Sabar</h3><p>Gimana sabarnya kamu ngadepin sikapku yang kadang mood-moodan.</p></div>
+                    <div class="card fade-in"><h3>Mata Kamu</h3><p>Ada ketenangan di sana yang nggak bisa aku temuin di tempat lain.</p></div>
+                    <div class="card fade-in"><h3>Playlist Kamu</h3><p>Selera musikmu yang unik, kadang aneh, tapi asik.</p></div>
+                </div>
+
+                <div class="surprise-box fade-in" id="surpriseBox">
+                    <div id="surpriseCover">
+                        <h2>Satu Pesan Terakhir</h2>
+                        <button style="background:white; color:var(--primary); border:none; padding:10px 25px; border-radius:20px; margin-top:15px; font-weight:bold; cursor:pointer;" onclick="revealSurprise()">Tap untuk baca</button>
+                    </div>
+                    <div class="surprise-content" id="surpriseContent">
+                        <h2>Terima Kasih ❤️</h2>
+                        <p>Makasih sudah jadi warna favorit di hidupku.
+Aku nggak tau ke depannya bakal gimana, tapi aku harap
+cerita ini bakal terus berlanjut. Panjang, seru, dan sama kamu.
+
+Happy Valentine's Day..</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="album-section">
+                <header style="padding: 50px 0 20px;">
+                    <h2>Orang Favorit Aku</h2>
+                    <p>Beberapa cuplikan momen favoritku.</p>
+                </header>
+                
+                <div class="photo-card fade-in" style="transform: rotate(-1deg);">
+                    <img src="https://files.catbox.moe/qd4dio.jpg" alt="Moment 1">
+                    <h3>sesuatu yang jadi favorit aku</h3>
+                    <p>Di hari Valentine ini, aku ingin bilang bahwa kamu adalah orang yang paling spesial bagiku. Cinta kita seperti bunga yang mekar indah, membawa kebahagiaan dan warna dalam hidupku.
+
+Setiap detik denganmu membuatku merasa lengkap. Aku ingin menghabiskan waktu denganmu, membuat kenangan indah, dan merayakan cinta kita setiap hari. Kamu adalah Valentine-ku! 💕.</p>
+                </div>
+
+                <div class="photo-card fade-in" style="transform: rotate(1deg);">
+                    <img src="https://files.catbox.moe/z48scd.jpg" alt="Moment 2">
+                    <h3>doa untuk mu</h3>
+                    <p>Di hari Valentine ini, kamu adalah segalanya bagiku. Cinta kita adalah anugerah yang indah, membuat hidupku penuh makna. aku selalu mendoakan yang terbaik untuk kamu dan hubungan kita, aku harap kita akan selamanya dan masih bersama di hari Valentine yang akan datang lagi</p>
+                </div>
+            </div>
+
+            <footer style="text-align: center; margin-top: 100px; color: #aaa; font-size: 0.8rem;">RUII-X081 | 2026</footer>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() { document.getElementById('navMenu').classList.toggle('active'); }
+        function showSection(section) {
+            document.getElementById('home-section').style.display = section === 'home' ? 'block' : 'none';
+            document.getElementById('album-section').style.display = section === 'album' ? 'block' : 'none';
+            toggleMenu(); window.scrollTo(0,0); startObserver();
+        }
+        function openGift() {
+            document.getElementById('intro').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('intro').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('hamburger').style.display = 'block';
+                startObserver();
+            }, 1000);
+        }
+        function startObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
+        function revealSurprise() {
+            document.getElementById('surpriseCover').style.display = 'none';
+            document.getElementById('surpriseContent').style.display = 'block';
+            for (let i = 0; i < 35; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart-rain');
+                    heart.innerHTML = '❤';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.color = i % 2 === 0 ? '#800000' : '#FFD1DC';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 150);
+            }
+        }
+    </script>
+</body>
+                          </html>
+                          
